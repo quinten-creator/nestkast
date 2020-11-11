@@ -35,14 +35,15 @@ sudo wget https://download.owncloud.org/community/owncloud-complete-20200731.zip
 sudo mv owncloud-complete-20200731.zip /var/www/html
 cd /var/www/html
 sudo unzip -q owncloud-complete-20200731.zip
-echo "*** unzip goed"
+echo "*** unzip gelukt"
+
 sudo mkdir owncloud
 cd owncloud
 sudo mkdir data
 sudo chown www-data:www-data /var/www/html/owncloud/data
 sudo chmod 750 /var/www/html/owncloud/data
-sudo cp -r /home/pi/birdCam/apps-external /var/www/html/owncloud
-sudo cp /home/pi/birdCam/owncloud.db /var/www/html/owncloud/data
+sudo cp -r /home/pi/birdhouseinstalling /var/www/html/owncloud
+sudo cp /home/pi/birdhouseinstalling/owncloud.db /var/www/html/owncloud/data
 sudo chmod 777 /var/www/html/owncloud/apps-external
 
 # Install camera
@@ -55,15 +56,16 @@ sudo apt install gpac -y
 
 # copy directory
 echo "*** make USBdrive"
-sudo mkdir /mnt/USBdrive
-# install library 
-echo "*** install library  for camera_PIR_mp4.py"
+ sudo mkdir /mnt/USBdrive
+
+# install library
+echo "*** install library for camera_PIR_mp4.py"
 sudo apt install python3-gpiozero
 sudo apt install python-gpiozero
 sudo pip3 install gpiozero
 sudo pip install gpiozero
-sudo cp /home/pi/birdCam/camera_PIR_mp4.py /home/pi
-cd /home/pi/birdCam
+sudo cp /home/pi/birdhouseinstalling/cameratest.py /home/pi 
+cd /home/pi/birdhouseinstalling
 echo "*** copy camera.py complete"
 
 echo "*** autostart camera config"
@@ -71,22 +73,21 @@ sudo cp startcamera.service /home/pi
 cd /home/pi
 sudo cp startcamera.service /lib/systemd/system/startcamera.service
 sudo chmod 644 /lib/systemd/system/startcamera.service
-sudo systemctl daemon-reload
-sudo systemctl enable startcamera.service
-echo "*** enable start camera.py on reboot OK"
+sudo systemctl daemon-reload sudo systemctl enable startcamera.service
+ echo "*** enable start camera.py on reboot OK"
 
 # Install hotspot
 sudo apt install hostapd -y
 sudo apt install dnsmasq -y
 sudo DEBIAN_FRONTEND=noninteractive apt install -y netfilter-persistent iptables-persistent
 
-sudo cp -r /home/pi/birdCam/pi-ap /home/pi
+sudo cp -r /home/pi/birdhouseinstalling/pi-ap /home/pi
 cd /home/pi/pi-ap
 sudo chmod 755 install.sh
 sudo chmod 755 ap-config.sh
 sudo chmod 755 dns.sh
 sudo chmod 755 firewall_Default-Policies.sh
-sudo chmod 755	firewall_ipv4.sh
+sudo chmod 755 firewall_ipv4.sh
 sudo chmod 755 firewall_ipv6.sh
 sudo chmod 755 functions.sh
 sudo chmod 755 hostname.sh
@@ -97,4 +98,5 @@ sudo chmod 755 service-pwr-mgmnt-disable.sh
 sudo chmod 755 timedate.sh
 sudo chmod 755 variables.sh
 sudo ./install.sh
+
 
